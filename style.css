@@ -136,7 +136,16 @@ body {
   background: #000;
 }
 
-.gif-captions { padding: 16px; }
+.gif-title {
+  padding: 10px 16px 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gif-captions { padding: 10px 16px 16px; }
 
 .caption-row {
   display: flex;
