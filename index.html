@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GIF Accessibility Extension — Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>GIF Accessibility Extension</h1>
+      <p class="subtitle">
+        A Chrome extension that automatically generates alt-text descriptions for GIFs
+        using a fine-tuned Vision-Language Model running entirely in the browser.
+      </p>
+      <div class="hero-buttons">
+        <a href="https://github.com/Patricijia/SmolVLM-GIF-Extension/releases/latest" class="btn btn-primary" id="download-btn">
+          Download Extension
+        </a>
+        <a href="#demo" class="btn btn-secondary">See Examples</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Detect GIFs</h3>
+        <p>The extension scans the page for animated GIFs as they load.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Extract frames</h3>
+        <p>16 evenly-spaced frames are sampled and arranged into a 4×4 grid image.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Run the model</h3>
+        <p>SmolVLM-256M (fine-tuned on GIF grids) runs locally via WebGPU — no data leaves your browser.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Apply alt text</h3>
+        <p>The generated caption is written to the <code>alt</code> attribute, making the GIF accessible to screen readers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODEL COMPARISON -->
+  <section class="section alt-bg" id="demo">
+    <h2>Model comparison</h2>
+    <p class="section-desc">
+      The fine-tuned model produces GIF-style action descriptions.
+      The base model generates unrelated internet text.
+      Both run at ~11s/GIF on WebGPU.
+    </p>
+
+    <div class="gif-grid" id="gif-grid">
+      <!-- Cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section class="section" id="install">
+    <h2>Installation</h2>
+    <ol class="install-steps">
+      <li>Download the <code>.zip</code> from the button above and extract it.</li>
+      <li>Open Chrome and go to <code>chrome://extensions</code>.</li>
+      <li>Enable <strong>Developer mode</strong> (top-right toggle).</li>
+      <li>Click <strong>Load unpacked</strong> and select the extracted <code>dist/</code> folder.</li>
+      <li>Visit any page with GIFs — captions appear automatically.</li>
+    </ol>
+    <p class="note">Requires Chrome 120+ with WebGPU enabled. First load downloads the model (~500 MB, cached afterwards).</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Master's Thesis — Vilnius University &nbsp;·&nbsp;
+      <a href="https://huggingface.co/Patricijia/smolvlm-gif-descriptor" target="_blank">Model on HuggingFace</a> &nbsp;·&nbsp;
+      <a href="https://github.com/Patricijia/SmolVLM-GIF-Extension" target="_blank">Source on GitHub</a>
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
