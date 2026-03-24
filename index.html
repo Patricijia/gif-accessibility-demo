@@ -17,8 +17,8 @@
         using a fine-tuned Vision-Language Model running entirely in the browser.
       </p>
       <div class="hero-buttons">
-        <a href="https://github.com/Patricijia/SmolVLM-GIF-Extension/releases/latest" class="btn btn-primary" id="download-btn">
-          Download Extension
+        <a href="gif-accessibility-extension.zip" download="gif-accessibility-extension.zip" class="btn btn-primary">
+          ↓ Download Extension
         </a>
         <a href="#demo" class="btn btn-secondary">See Examples</a>
       </div>
@@ -52,31 +52,53 @@
     </div>
   </section>
 
-  <!-- MODEL COMPARISON -->
-  <section class="section alt-bg" id="demo">
-    <h2>Model comparison</h2>
-    <p class="section-desc">
-      The fine-tuned model produces GIF-style action descriptions.
-      The base model generates unrelated internet text.
-      Both run at ~11s/GIF on WebGPU.
-    </p>
-
-    <div class="gif-grid" id="gif-grid">
-      <!-- Cards injected by JS -->
-    </div>
-  </section>
-
   <!-- INSTALL -->
-  <section class="section" id="install">
+  <section class="section alt-bg" id="install">
     <h2>Installation</h2>
     <ol class="install-steps">
-      <li>Download the <code>.zip</code> from the button above and extract it.</li>
+      <li>Download the extension using the button above and extract the <code>.zip</code>.</li>
       <li>Open Chrome and go to <code>chrome://extensions</code>.</li>
       <li>Enable <strong>Developer mode</strong> (top-right toggle).</li>
       <li>Click <strong>Load unpacked</strong> and select the extracted <code>dist/</code> folder.</li>
       <li>Visit any page with GIFs — captions appear automatically.</li>
     </ol>
-    <p class="note">Requires Chrome 120+ with WebGPU enabled. First load downloads the model (~500 MB, cached afterwards).</p>
+    <p class="note">Requires Chrome 120+. First load downloads the model (~500 MB, cached afterwards).</p>
+
+    <!-- BROWSER LAUNCH COMMAND -->
+    <div class="launch-box">
+      <h3>Launch Chrome with WebGPU enabled</h3>
+      <p class="launch-desc">If the extension falls back to WASM (slow), launch Chrome with these flags to force WebGPU:</p>
+
+      <div class="tabs" id="os-tabs">
+        <button class="tab active" data-os="linux">Linux</button>
+        <button class="tab" data-os="windows">Windows</button>
+        <button class="tab" data-os="mac">macOS</button>
+      </div>
+
+      <div class="code-block" id="cmd-linux">
+        <code>google-chrome --enable-unsafe-webgpu --enable-features=Vulkan,VulkanFromANGLE,DefaultANGLEVulkan</code>
+        <button class="copy-btn" onclick="copyCmd('cmd-linux')">Copy</button>
+      </div>
+      <div class="code-block hidden" id="cmd-windows">
+        <code>chrome.exe --enable-unsafe-webgpu --enable-features=Vulkan</code>
+        <button class="copy-btn" onclick="copyCmd('cmd-windows')">Copy</button>
+      </div>
+      <div class="code-block hidden" id="cmd-mac">
+        <code>open -a "Google Chrome" --args --enable-unsafe-webgpu --enable-features=Vulkan</code>
+        <button class="copy-btn" onclick="copyCmd('cmd-mac')">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODEL COMPARISON -->
+  <section class="section" id="demo">
+    <h2>Model comparison</h2>
+    <p class="section-desc">
+      10 GIFs from a Giphy "surprise" search, captioned by both models.
+      The fine-tuned model produces GIF-style action descriptions.
+      The base model generates unrelated internet text.
+    </p>
+    <div class="gif-grid" id="gif-grid"></div>
   </section>
 
   <!-- FOOTER -->
@@ -88,5 +110,26 @@
   </footer>
 
   <script src="app.js"></script>
+  <script>
+    // OS tab switcher
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.code-block').forEach(b => b.classList.add('hidden'));
+        btn.classList.add('active');
+        document.getElementById('cmd-' + btn.dataset.os).classList.remove('hidden');
+      });
+    });
+
+    // Copy button
+    function copyCmd(id) {
+      const text = document.querySelector('#' + id + ' code').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('#' + id + ' .copy-btn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+  </script>
 </body>
 </html>
